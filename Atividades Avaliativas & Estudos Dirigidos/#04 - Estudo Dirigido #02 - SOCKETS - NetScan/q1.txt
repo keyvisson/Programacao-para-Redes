@@ -1,0 +1,12 @@
+1. 
+a) O que a variável ipHost (linha 4) irá armazenar?
+    Ira armazenar o endereco IP do DNS informado.
+
+b) O que a linha 9 faz? Explique os parâmetros do método socket() utilizados.
+    Cria um objeto socket. O primeiro parametro impoe que a conexao utilizada sera IPV4 ja o segundo parametro impoe que o tipo de conexao sera TCP.
+
+c) O que a linha 11 faz?
+    Tenta iniciar uma conexao IPV4 com o endereco IP armazenado na variável IpHost e nas portas informadas.
+
+d) No geral, o que o código completo está fazendo?
+    Tenta estabelecer uma conexao com o IP do DNS www.ifrn.edu.br nas portas armazenadas na variavel lstPorts.

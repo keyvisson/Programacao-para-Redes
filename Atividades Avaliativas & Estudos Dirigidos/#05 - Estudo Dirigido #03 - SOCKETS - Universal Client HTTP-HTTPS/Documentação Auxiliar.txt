@@ -1,0 +1,2 @@
+https://www.ibm.com/docs/pt-br/power10/7063-CR2?topic=apis-http-protocol
+https://www.geeksforgeeks.org/http-full-form/

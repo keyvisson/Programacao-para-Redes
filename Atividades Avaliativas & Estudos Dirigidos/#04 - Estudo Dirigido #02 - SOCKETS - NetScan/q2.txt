@@ -1,0 +1,6 @@
+2.
+a) O que a linha 11 faz?
+    Tenta iniciar uma conexao IPV4 com o endereco IP armazenado na variável IpHost e nas portas informadas.
+
+b) Qual a diferença em termos de resultado entre o código da questão 01 e o código dessa questão
+    Pois o connect_ex retorna um indicador de erro em vez de gerar uma exceção para erros como o connect. O indicador de erro e 0 se a operação for bem-sucedida.
