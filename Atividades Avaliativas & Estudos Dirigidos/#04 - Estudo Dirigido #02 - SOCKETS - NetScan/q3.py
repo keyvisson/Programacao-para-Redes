@@ -1,58 +1,38 @@
-# from importlib.metadata import files
-# import socket
-
-# with open('portas.txt', 'r') as file:
-#     for line in file: 
-#         split = line.split('/')
-#         split[3] = split[3].rstrip('\n')
-#         print(split)
-
-# strHost = input('Digite o DNS: ')
-# ipHost = socket.gethostbyname(strHost)
-
-# sockTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# sockUDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-# with open('portas.txt', 'r') as file:
-#     for line in file: 
-#         try:
-#             split = line.split('/')
-#             split[0] = int(split[0])
-#             split[3] = split[3].rstrip('\n')
-#             resultadoTCP = sockTCP.connect((ipHost,split[0]))
-#             if resultadoTCP == 0:
-#                 status = 'Aberta'
-#                 print(status)
-#             else:
-#                 status = 'Fechada' 
-#                 print(status)
-#         except TimeoutError:
-#             status = 'Fechada'
-#             print(status)
-    
-# sockTCP.close()
-# sockUDP.close()
-
 import socket
 
 strHost = input('Digite o DNS: ')
 ipHost = socket.gethostbyname(strHost)
 
-sockTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sockUDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+list = []
+counter = 0
 
-while True: 
-    try:
-        resultadoTCP = sockTCP.connect((ipHost,80))
-        resultadoUDP = sockUDP.connect((ipHost,20))
-        if resultadoTCP == 0:
-            print ("Porta está aberto")
-        else:
-            print ("Porta não está aberto") 
 
-    except TimeoutError:
-        print ("Porta não está aberto") 
-        break
+with open('portas.txt', 'r') as file:
+    for line in file: 
+        split = line.split('/')
+        split[0] = int(split[0])
+        split[3] = split[3].rstrip('\n')
+        list.append(split)
 
-sockTCP.close()
-sockUDP.close()
+for i in list:
+
+    sockTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sockTCP.settimeout(1)
+    resultadoTCP = sockTCP.connect_ex((ipHost,list[counter][0]))
+    if resultadoTCP == 0:
+        statusTCP = 'Aberta'
+    else:
+        statusTCP = 'Fechada' 
+    print(f"\nPorta: {list[counter][0]} Protocolo: {list[counter][1]} Descrição: {list[counter][2]} Status para TCP: {statusTCP}\n")
+    sockTCP.close()
+
+
+    sockUDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    resultadoUDP = sockUDP.connect_ex((ipHost,list[counter][0]))
+    if resultadoUDP == 0:
+        statusUDP = 'Aberta'
+    else:
+        statusUDP = 'Fechada' 
+    print(f"\nPorta: {list[counter][0]} Protocolo: {list[counter][1]} Descrição: {list[counter][2]} Status para UDP: {statusUDP}\n")
+    sockUDP.close()
+    counter += 1
