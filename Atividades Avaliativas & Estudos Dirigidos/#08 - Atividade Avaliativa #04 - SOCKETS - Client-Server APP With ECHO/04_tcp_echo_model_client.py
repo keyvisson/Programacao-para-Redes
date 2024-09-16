@@ -21,5 +21,4 @@ while True:
         mensagem_recebida = dado_recebido.decode(CODE_PAGE)
         print(f'Echo Recebido: {mensagem_recebida}')
 
-# Fechando o socket
 tcp_socket.close()
