@@ -8,67 +8,64 @@ import socket, sys
 # --------------------------------------------------
 PORT = 80  
 CODE_PAGE   = 'utf-8'
-BUFFER_SIZE = 256
+BUFFER_SIZE = 1024
 # --------------------------------------------------
 
-host = input('\nInforme o nome do HOST ou URL do site: ')
+url = input("Digite a URL completa da imagem: ")
 
-# Remove o prefixo "http://"
-if host.startswith('http://'):
-    host = host[7:]
-# Remove o prefixo "https://"
-if host.startswith('https://'):
-    host = host[8:]
-
-socket_tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-socket_tcp.settimeout(10)
-
-try:
-    socket_tcp.connect((host, PORT))
-except socket.timeout:
-    print('\nERRO.... Tempo de conexão esgotado.')
-except socket.gaierror:
-    print('\nERRO.... Nome do host não pôde ser resolvido.')
-
-else:
-    requisicao = f'GET / HTTP/1.1\r\nHost: {host}\r\nAccept: text/html\r\nConnection: close\r\n\r\n'
-
-    try:
-        socket_tcp.sendall(requisicao.encode(CODE_PAGE))
-    except Exception as e:
-        print(f'\nERRO.... {e}')
-    else:
-        resposta_completa = b''
-        while True:
-            try:
-                resposta = socket_tcp.recv(BUFFER_SIZE)
-                if not resposta:
-                    break
-                resposta_completa += resposta
-            except socket.timeout:
-                print('\nERRO.... Tempo esgotado ao receber dados.')
-                break
-
-        socket_tcp.close()
+def separar_url(url):
+#remover o protocolo (http:// ou https://)
+    if url.startswith('http://'):
+        url = url[7:]
+    elif url.startswith('https://'):
+        url = url[8:]
     
-        if b'\r\n\r\n' in resposta_completa:
-            cabecalho, corpo = resposta_completa.split(b'\r\n\r\n', 1)
-        else:
-            cabecalho = resposta_completa
-            corpo = b''
+#separar o host e o caminho da imagem
+    partes = url.split('/', 1)
+    servidor = partes[0]
+    caminho_imagem = '/' + partes[1] if len(partes) > 1 else '/'
+    return servidor, caminho_imagem
 
-        tamanho_conteudo = None
-        for linha in cabecalho.decode(CODE_PAGE, errors='ignore').split('\r\n'):
-            if linha.lower().startswith('content-length:'):
-                tamanho_conteudo = int(linha.split(':')[1].strip())
-                break
+def obter_nome_arquivo(url):
+    return url.split('/')[-1]
+
+def baixar_imagem(url):
+    servidor, caminho_imagem = separar_url(url)
+    nome_arquivo = obter_nome_arquivo(url)
+    print(f"Servidor: {servidor}")
+    print(f"Imagem: {caminho_imagem}")
+    print(f"Nome do arquivo: {nome_arquivo}")
+
+    requisicao_url = f'GET {caminho_imagem} HTTP/1.1\r\nHOST: {servidor}\r\n\r\n'
+    PORT = 80
+    BUFFER_SIZE = 1024
+
+    socket_conexao = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket_conexao.connect((servidor, PORT))
+    socket_conexao.sendall(requisicao_url.encode())
+
+#ler o cabecalho para encontrar o tamanho da imagem
+    resposta = b""
+    while b"\r\n\r\n" not in resposta:
+        resposta += socket_conexao.recv(BUFFER_SIZE)
+    
+    cabecalho, dados = resposta.split(b"\r\n\r\n", 1)
+    cabecalhos = cabecalho.decode(CODE_PAGE).splitlines()
+    tamanho_conteudo = 0
+    for linha in cabecalhos:
+        if linha.startswith('Content-Length:'):
+            tamanho_conteudo = int(linha.split(':')[1].strip())
+            break
         
-        if tamanho_conteudo is not None:
-            corpo = corpo[:tamanho_conteudo]
-        
-        with open('output.html', 'wb') as arquivo:
-            arquivo.write(corpo)
-        
-        print('-'*50)
-        print('Resposta salva em "output.html".')
-        print('-'*50)
+    with open(nome_arquivo, 'wb') as arquivo_imagem:
+        arquivo_imagem.write(dados)
+
+#continuar recebendo dados até que todo o conteúdo seja baixado
+        while len(dados) < tamanho_conteudo:
+            dados = socket_conexao.recv(BUFFER_SIZE)
+            arquivo_imagem.write(dados)
+
+    print(f"Download concluído: {nome_arquivo}")
+    socket_conexao.close()
+
+baixar_imagem(url)

@@ -8,7 +8,7 @@ import socket, sys
 # --------------------------------------------------
 PORT = 80  
 CODE_PAGE   = 'utf-8'
-BUFFER_SIZE = 256
+BUFFER_SIZE = 1024
 # --------------------------------------------------
 
 host = input('\nInforme o nome do HOST ou URL do site: ')
