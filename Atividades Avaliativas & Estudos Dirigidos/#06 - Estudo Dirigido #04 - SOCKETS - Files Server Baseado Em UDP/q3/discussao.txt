@@ -1,0 +1,4 @@
+3.
+    Os arquivos nao transferem arquivos grandes como deveriam pois o protocolo UDP não é confiavel para transferência de arquivos, ele
+    nao garante que os dados sejam completamente entregues ao destino e ele n verifica se o arquivo foi enviado completamente e corretamente. 
+    Para esse tipo de aplicacao e indicado o uso do protocolo TCP.

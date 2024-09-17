@@ -1,0 +1,4 @@
+Vantagens: o cliente sabe o tamanho do arquivo que vai receber, então so ira fechar quando terminar de receber o total de dados informados.
+
+Desvantagens: A desvantagem vem da utilizacao do protocolo UDP, pois mesmo verificando o tamanho total que deveria receber, 
+o pacote pode ser alterado durante o envio ou receber informacoess corrompidass.

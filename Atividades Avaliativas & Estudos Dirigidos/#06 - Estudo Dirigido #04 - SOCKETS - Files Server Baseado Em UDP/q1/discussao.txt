@@ -1,0 +1,2 @@
+Vantagens: O uso do timeout faz com que seja necessario ficar esperando indefinidamente mesmo apos o envio total dos arquivos.
+Desvantagens: Dependendo do tamanho do arquivo ou da velocidade de upload/download pode ser que o timout expire antes do envio completo do arquivo.
