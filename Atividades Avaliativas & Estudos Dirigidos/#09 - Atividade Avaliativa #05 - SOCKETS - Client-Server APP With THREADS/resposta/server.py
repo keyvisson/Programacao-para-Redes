@@ -3,8 +3,8 @@ import threading
 from socket_constants import *
 from funcoes_socket import hora_atual, trace_route, vigenere
 
-clientes_conectados = {}  # Dicionário para armazenar clientes conectados e seus IPs/Portas
-comandos_cliente = {}    # Dicionário para armazenar comandos enviados por cliente
+clientes_conectados = {}  
+comandos_cliente = {}   
 
 def processar_comandos(comando, endereco_cliente):
     if comando == 'HORA':
@@ -37,7 +37,6 @@ def gerenciar_cliente(conexao, endereco_cliente):
         mensagem_decodificada = mensagem.decode(CODE_PAGE)
         print(f'{endereco_cliente} enviou: {mensagem_decodificada}')
 
-        # Adiciona comando ao histórico do cliente
         if endereco_cliente not in comandos_cliente:
             comandos_cliente[endereco_cliente] = []
         comandos_cliente[endereco_cliente].append(mensagem_decodificada)
@@ -50,7 +49,7 @@ def gerenciar_cliente(conexao, endereco_cliente):
     conexao.close()
 
 def main():
-    print('Servidor ativo...\n\n')
+    print('Recebendo Mensagens...\n\n')
 
     # Criando o socket TCP
     tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

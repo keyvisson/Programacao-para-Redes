@@ -84,7 +84,7 @@ def extrair_info_gps(dados_exif):
     return info_gps
 
 def obter_cidade(info_gps):
-    # Implemente a função para obter a cidade a partir das informações de latitude e longitude
+
     pass
 
 def main():
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 
 
 
-#o codigo abaixo tem funcoes similares mas utilizando bibliotecas, utilizado para testes
+#o codigo abaixo tem funcoes similares mas utilizando bibliotecas, foi utilizado para testes
 
 # import os
 # import json

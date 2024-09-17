@@ -9,11 +9,11 @@ def main():
     tcp_socket.connect((HOST_SERVER, SOCKET_PORT))
 
     while True:
-        mensagem = input('\nDigite um dos seguintes comandos: \n "HORA" (Para saber a hora atual do servidor), \n "ROTA <url>" (Para saber a rota ate a URL informada.)) ou \n "CRIPTO <string>%<chave>" (para encerrar a conexao com o servidor): ')
+        mensagem = input('\nDigite um dos seguintes comandos: \n "HORA" (Para saber a hora atual do servidor) \n "ROTA <url>" (Para saber a rota ate a URL informada.)) \n "CRIPTO <string>%<chave>" (para criptografar com o algoritimo VIGENERE uma string com a chave informada) \n "SAIR" (para encerrar a conexao com o servidor): ')
 
-        # if mensagem.lower() == 'SAIR':
-        #     print("Conexao encerrado forcadamente.")
-        #     break
+        if mensagem.upper() == 'SAIR':
+            print("Conexao encerrado forcadamente.")
+            break
 
         if mensagem:
             mensagem = mensagem.encode(CODE_PAGE)
