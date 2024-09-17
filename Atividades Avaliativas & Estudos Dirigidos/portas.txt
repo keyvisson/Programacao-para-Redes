@@ -1,0 +1,10 @@
+7/ TCP , UDP /ECHO protocol (Servico Echo)/Oficial
+20/ TCP /FTP (File Transfer Protocol - Protocolo de transferencia de arquivo) Porta de dados do FTP/Oficial
+22/ TCP , UDP /SSH (Secure Shell - Shell seguro) - Usada para logins seguros, transferencia de arquivos e redirecionamento de porta/Oficial
+23/ TCP , UDP /Telnet protocol - Comunicacao de texto sem encriptacao/Oficial
+43/ TCP /WHOIS (protocolo de consulta de informacoes de contato e DNSprotocol)/Oficial
+53/ TCP , UDP /DNS (Domain Name System - Sistema de nome de dominio)/Oficial
+67/ UDP /BOOTP (BootStrap Protocol) server; tambem utilizada por DHCP (Protocolo de configuracao dinamica do Host)/Oficial
+69/ UDP /TFTP(Trivial File Transfer Protocol) (Protocolo de transferencia de arquivo trivial)/Oficial
+80/ TCP /HTTP (HyperText Transfer Protocol - Procolo de transferencia de HiperTexto) - usada para transferir paginas WWW/Oficial
+81/ TCP /Skype protocol/Oficial

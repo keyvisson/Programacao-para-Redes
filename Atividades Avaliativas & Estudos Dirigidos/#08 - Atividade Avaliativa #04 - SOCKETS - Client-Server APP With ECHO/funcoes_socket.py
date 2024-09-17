@@ -11,7 +11,7 @@ def trace_route(url):
     except Exception as e:
         return str(e)
 
-def vigenere_cipher(text, key):
+def vigenere(text, key):
     """Criptografa a mensagem usando o algoritmo de Vigenère."""
     def shift_char(c, k):
         if c.isalpha():

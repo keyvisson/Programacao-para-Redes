@@ -1,6 +1,6 @@
 import socket
 from socket_constants import *
-from funcoes_socket import hora_atual, trace_route, vigenere_cipher
+from funcoes_socket import hora_atual, trace_route, vigenere
 
 def processar_comandos(comando):
     if comando == 'HORA':
@@ -11,7 +11,7 @@ def processar_comandos(comando):
     elif comando.startswith('CRIPTO '):
         try:
             msg, key = comando.split('%')
-            return vigenere_cipher(msg.split(' ', 1)[1], key)
+            return vigenere(msg.split(' ', 1)[1], key)
         except ValueError:
             return 'Formato inválido para comando de criptografia.'
     else:
