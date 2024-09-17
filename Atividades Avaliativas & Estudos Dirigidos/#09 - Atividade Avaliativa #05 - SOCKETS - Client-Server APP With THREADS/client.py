@@ -1,48 +1,38 @@
-import socket, threading
+import socket
+from socket_constants import *
+import threading
 
-SERVER = 'localhost'
-PORT = 5678
-PROMPT = 'Digite sua msg (!q para terminar) > '
+def receber_respostas(tcp_socket):
+    while True:
+        dado_recebido = tcp_socket.recv(BUFFER_SIZE)
+        if not dado_recebido:
+            break
+        mensagem_recebida = dado_recebido.decode(CODE_PAGE)
+        print(f'\nResposta Recebida: {mensagem_recebida}')
 
-def servInteraction():
-    msg = b' '
-    while msg != b'':
-        try:
-            msg = sock.recv(512)
-            print ("\n"+msg.decode('utf-8')+"\n"+PROMPT)
-        except:
-            msg = b''
-    closeSocket()
+def main():
+    # Criando o socket TCP
+    tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-def userInteraction():
-    msg = ''
-    while msg != '!q':
-        try:
-            msg = input(PROMPT)
-            if msg != '': sock.send(msg.encode('utf-8'))
-        except:
-            msg = '!q'
-    closeSocket()
+    # Ligando o socket a porta
+    tcp_socket.connect((HOST_SERVER, SOCKET_PORT))
 
-def closeSocket():
-    try:
-        sock.close()
-    except:
-        None
+    # Inicia thread para receber respostas do servidor
+    receber_thread = threading.Thread(target=receber_respostas, args=(tcp_socket,))
+    receber_thread.start()
 
-try:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((SERVER, PORT))
+    while True:
+        mensagem = input('\nDigite um dos seguintes comandos: \n "HORA" (Para saber a hora atual do servidor), \n "ROTA <url>" (Para saber a rota ate a URL informada), \n "CRIPTO <string>%<chave>" (para criptografar a string), \n "LISTAR_CLIENTES" (para listar clientes conectados), \n "LISTAR_COMANDOS" (para listar os comandos enviados) ou \n "SAIR" (para encerrar a conexão): ')
 
-    print ("Conectado a: ", (SERVER, PORT))
-    tServer = threading.Thread(target=servInteraction)
-    tUser = threading.Thread(target=userInteraction)
+        if mensagem:
+            if mensagem.upper() == 'SAIR':
+                break
 
-    tServer.start()
-    tUser.start()
+            mensagem = mensagem.encode(CODE_PAGE)
+            tcp_socket.send(mensagem)
+    
+    tcp_socket.close()
 
-    tServer.join()
-    tUser.join()
-except Exception as e:
-    print ("Falha ", e)
+if __name__ == '__main__':
+    main()
 
